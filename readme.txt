@@ -1,4 +1,4 @@
-以下のURLからwikiExtractor.pyをダウンロードしてscript/ 下に入れる。
+以下のURLからWikiExtractor.pyをダウンロードしてscript/ 下に入れる。
 https://github.com/attardi/wikiextractor
 
 data/ 下に jawiki-latest-pages-articles.xml.bz2 を入れて、

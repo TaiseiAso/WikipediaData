@@ -14,7 +14,7 @@ wiki_xml_path = "data/jawiki-latest-pages-articles.xml.bz2"
 wiki_text_path = "data/wiki.txt"
 
 # ウィキペディアのXMLファイルを解凍
-os.system("python script/wikiExtractor.py " + wiki_xml_path + " --output data/tmp/")
+os.system("python script/WikiExtractor.py " + wiki_xml_path + " --output data/tmp/")
 
 # 解凍したファイルを一つにまとめて元データは削除する
 os.system("find data/tmp/ | grep wiki | awk \'{system(\"cat \"$0\" >> " + wiki_text_path + "\")}\'")
