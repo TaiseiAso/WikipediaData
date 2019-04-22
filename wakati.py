@@ -35,50 +35,50 @@ open(wiki_wakati_path, 'w', encoding='utf-8') as f_wakati:
             line = f_text.readline()
 
         # 文を整形
-        tweet = re.sub("\([^笑泣嬉悲驚汗爆渋苦困死楽怒哀呆殴涙藁]+?\)", " ", tweet)
-        tweet = re.sub("[^ぁ-んァ-ヶｧ-ｳﾞ一-龠々ー～〜、。！？!?,，.．]", " ", tweet)
+        line = re.sub("\([^笑泣嬉悲驚汗爆渋苦困死楽怒哀呆殴涙藁]+?\)", " ", line)
+        line = re.sub("[^ぁ-んァ-ヶｧ-ｳﾞ一-龠々ー～〜、。！？!?,，.．]", " ", line)
 
-        tweet = re.sub("[,，]", "、", tweet)
-        tweet = re.sub("[．.]", "。", tweet)
-        tweet = re.sub("〜", "～", tweet)
-        tweet = re.sub("、(\s*、)+|。(\s*。)+", "...", tweet)
+        line = re.sub("[,，]", "、", line)
+        line = re.sub("[．.]", "。", line)
+        line = re.sub("〜", "～", line)
+        line = re.sub("、(\s*、)+|。(\s*。)+", "...", line)
 
-        tweet = re.sub("!+", "！", tweet)
-        tweet = re.sub("！(\s*！)+", "！", tweet)
-        tweet = re.sub("\?+", "？", tweet)
-        tweet = re.sub("？(\s*？)+", "？", tweet)
+        line = re.sub("!+", "！", line)
+        line = re.sub("！(\s*！)+", "！", line)
+        line = re.sub("\?+", "？", line)
+        line = re.sub("？(\s*？)+", "？", line)
 
-        tweet = re.sub("～(\s*～)+", "～", tweet)
-        tweet = re.sub("ー(\s*ー)+", "ー", tweet)
+        line = re.sub("～(\s*～)+", "～", line)
+        line = re.sub("ー(\s*ー)+", "ー", line)
 
-        tweet += "。"
-        tweet = re.sub("[、。](\s*[、。])+", "。", tweet)
+        line += "。"
+        line = re.sub("[、。](\s*[、。])+", "。", line)
 
-        tweet = re.sub("[。、！](\s*[。、！])+", "！", tweet)
-        tweet = re.sub("[。、？](\s*[。、？])+", "？", tweet)
-        tweet = re.sub("((！\s*)+？|(？\s*)+！)(\s*[！？])*", "!?", tweet)
+        line = re.sub("[。、！](\s*[。、！])+", "！", line)
+        line = re.sub("[。、？](\s*[。、？])+", "？", line)
+        line = re.sub("((！\s*)+？|(？\s*)+！)(\s*[！？])*", "!?", line)
 
         for w in ["っ", "笑", "泣", "嬉", "悲", "驚", "汗", "爆", "渋", "苦", "困", "死", "楽", "怒", "哀", "呆", "殴", "涙", "藁"]:
-            tweet = re.sub(w + "(\s*" + w + ")+", " " + w + " ", tweet)
+            line = re.sub(w + "(\s*" + w + ")+", " " + w + " ", line)
 
-        tweet = re.sub("、\s*([笑泣嬉悲驚汗爆渋苦困死楽怒哀呆殴涙藁])\s*。", " \\1。", tweet)
-        tweet = re.sub("(。|！|？|!\?)\s*([笑泣嬉悲驚汗爆渋苦困死楽怒哀呆殴涙藁])\s*。", " \\2\\1", tweet)
+        line = re.sub("、\s*([笑泣嬉悲驚汗爆渋苦困死楽怒哀呆殴涙藁])\s*。", " \\1。", line)
+        line = re.sub("(。|！|？|!\?)\s*([笑泣嬉悲驚汗爆渋苦困死楽怒哀呆殴涙藁])\s*。", " \\2\\1", line)
 
-        tweet = re.sub("、", " 、 ", tweet)
-        tweet = re.sub("。", " 。\n", tweet)
+        line = re.sub("、", " 、 ", line)
+        line = re.sub("。", " 。\n", line)
         # 、。を除去する場合
-        #tweet = re.sub("、", " ", tweet)
-        #tweet = re.sub("。", "\n", tweet)
+        #line = re.sub("、", " ", line)
+        #line = re.sub("。", "\n", line)
 
-        tweet = re.sub("(\.\s*)+", " ... ", tweet)
-        tweet = re.sub("！", " ！\n", tweet)
-        tweet = re.sub("？", " ？\n", tweet)
-        tweet = re.sub("!\?", " !?\n", tweet)
+        line = re.sub("(\.\s*)+", " ... ", line)
+        line = re.sub("！", " ！\n", line)
+        line = re.sub("？", " ？\n", line)
+        line = re.sub("!\?", " !?\n", line)
 
-        tweet = re.sub("\n(\s*[～ー])+", "\n", tweet)
+        line = re.sub("\n(\s*[～ー])+", "\n", line)
 
-        tweet = re.sub("^([\s\n]*[。、！？!?ー～]+)+", "", tweet)
-        tweet = re.sub("(.+?)\\1{3,}", "\\1\\1\\1", tweet)
+        line = re.sub("^([\s\n]*[。、！？!?ー～]+)+", "", line)
+        line = re.sub("(.+?)\\1{3,}", "\\1\\1\\1", line)
 
         # 改行ごとに文を分割する
         for sent in line.split("\n"):
