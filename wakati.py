@@ -84,17 +84,18 @@ open(wiki_wakati_path, 'w', encoding='utf-8') as f_wakati:
         for sent in line.split("\n"):
             add_sent = ""
             words = owakati.parse(sent).strip().split()
+            len = 0
+
             for word in words:
                 if word not in ["ノ", "ーノ", "ロ", "艸", "屮", "罒", "灬", "彡", "ヮ", "益",\
                 "皿", "タヒ", "厂" ,"厂厂", "啞", "卍", "ノノ", "ノノノ", "ノシ", "ノツ",\
                 "癶", "癶癶", "乁", "乁厂", "マ", "んご", "んゴ", "ンゴ", "にき", "ニキ", "ナカ", "み", "ミ"]:
                     if word not in ["つ", "っ"] or add_sent != "":
                         add_sent += word + " "
+                        len += 1
 
-            add_sent = add_sent.strip()
-            if add_sent not in ["、", "。", "！", "？", "!?", "", "... 。", "... ！", "... ？", "... !?",\
-            "人 。", "つ 。", "っ 。", "笑 。", "笑 ！", "笑 ？", "笑 !?"]:
-                f_wakati.write(add_sent + "\n")
+            if len >= 4:
+                f_wakati.write(add_sent.strip() + "\n")
 
         line = f_text.readline()
 
