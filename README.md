@@ -1,3 +1,8 @@
+# WikipediaData
+***
+Tool to extract only articles from Wikipedia and divide into morphemes.
+
+
 以下のURLからWikiExtractor.pyをダウンロードしてscript/ 下に入れる。
 https://github.com/attardi/wikiextractor
 
