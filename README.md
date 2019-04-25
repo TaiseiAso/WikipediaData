@@ -12,22 +12,22 @@
     - jawiki-latest-pages-articles.xml.bz2
 
 ## 使い方
-1. https://github.com/attardi/wikiextractor から WikiExtractor.py をダウンロードして "script/" に保存。
+1. https://github.com/attardi/wikiextractor から WikiExtractor.py をダウンロードして "script/" に保存する。
 
-2. https://dumps.wikimedia.org/jawiki から jawiki-latest-pages-articles.xml.bz2 をダウンロードして "data/" に保存。
+2. https://dumps.wikimedia.org/jawiki から jawiki-latest-pages-articles.xml.bz2 をダウンロードして "data/" に保存する。
 
-3. ウィキペディアコーパスを解凍して記事のみを抽出して一つのファイルにまとめて "data/" に保存。
+3. ウィキペディアコーパスを解凍して記事のみを抽出して一つのファイルにまとめて "data/" に保存される。
     ```
     $ python unzip.py
     ```
     保存されるファイル名は、 "config/config.yml" に保存した名前になる。
 
-4. 解凍した記事を形態素解析したウィキペディア記事コーパスを "wakati/" に保存する。
+4. 解凍した記事を形態素解析したウィキペディア記事コーパスが "wakati/" に保存される。
     ```
     $ python wakati.py
     ```
 
-5. 形態素解析したウィキペディア記事コーパスを長さでフィルタリングして、 "filtered/" に保存。
+5. 形態素解析したウィキペディア記事コーパスを長さでフィルタリングして、 "filtered/" に保存される。
     ```
     $ python filter.py
     ```
