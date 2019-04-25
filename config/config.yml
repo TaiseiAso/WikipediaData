@@ -1,5 +1,5 @@
 filename:
-    wiki_file           : wiki
+    wiki_file   : wiki
 
 filter:
     len_min : 10

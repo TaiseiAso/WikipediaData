@@ -57,6 +57,7 @@ def filtering(config):
 
             while line:
                 cnt += 1
+
                 if check(line, fi):
                     cnt_ += 1
                     f_filtered.write(line)
