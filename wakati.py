@@ -21,7 +21,7 @@ import MeCab
 owakati = MeCab.Tagger("-Owakati")
 
 
-def check(self, text):
+def check(text):
     """
     テキストに不適切な情報が含まれていないかを判定
     @param text テキスト
@@ -93,7 +93,7 @@ def normalize(text):
     return text
 
 
-def del_morpheme(self, text):
+def del_morpheme(text):
     """
     テキストから特定の形態素を除去する
     @param text テキスト
