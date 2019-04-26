@@ -160,7 +160,7 @@ def wakati(config):
             line = unicodedata.normalize('NFKC', line).strip()
 
             # 適切な文のみ選択する
-            while check(line):
+            if check(line):
                 # 文を整形して保存
                 line = del_morpheme(normalize(line))
                 if line != "":
