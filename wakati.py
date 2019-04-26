@@ -97,28 +97,28 @@ def del_morpheme(text):
     """
     テキストから特定の形態素を除去する
     @param text テキスト
-    @return 特定の形態素を除去したテキスト
+    @return 特定の形態素を除去したテキストを文単位に分割したリスト
     """
     lines = text.strip().split("\n")
-    result = ""
+    results = []
 
     for line in lines:
-        add_result = ""
+        result = ""
         morphemes = tagger.parse(line).strip().split()
 
         for morpheme in morphemes:
             if morpheme not in ["ノ", "ーノ", "ロ", "艸", "屮", "罒", "灬", "彡", "ヮ", "益",\
             "皿", "タヒ", "厂", "厂厂", "啞", "卍", "ノノ", "ノノノ", "ノシ", "ノツ",\
             "癶", "癶癶", "乁", "乁厂", "マ", "んご", "んゴ", "ンゴ", "にき", "ニキ", "ナカ", "み", "ミ"]:
-                if morpheme not in ["つ", "っ"] or add_result != "":
-                    add_result += morpheme + " "
+                if morpheme not in ["つ", "っ"] or result != "":
+                    result += morpheme + " "
 
-        add_result = add_result.strip()
-        if add_result not in ["、", "。", "！", "？", "!?", "", "... 。", "... ！", "... ？", "... !?",\
+        result = result.strip()
+        if result not in ["、", "。", "！", "？", "!?", "", "... 。", "... ！", "... ？", "... !?",\
         "人 。", "つ 。", "っ 。", "笑 。", "笑 ！", "笑 ？", "笑 !?"]:
-            result += add_result + " "
+            results.append(result)
 
-    return result.strip()
+    return results
 
 
 def wakati(config):
@@ -148,7 +148,7 @@ def wakati(config):
         for name in files:
             os.remove(os.path.join(root, name))
 
-    cnt, cnt_ = 0, 0
+    cnt, cnt_, cnt_2 = 0, 0, 0
 
     # 形態素解析してコーパスを作成
     with open(wiki_path, 'r', encoding='utf-8') as f_text,\
@@ -162,14 +162,16 @@ def wakati(config):
             # 適切な文のみ選択する
             if check(line):
                 # 文を整形して保存
-                line = del_morpheme(normalize(line))
-                if line != "":
+                results = del_morpheme(normalize(line))
+                if results != []:
                     cnt_ += 1
-                    f_wakati.write(line + "\n")
+                for result in results:
+                    cnt_2 += 1
+                    f_wakati.write(result + "\n")
 
             line = f_text.readline()
 
-    print(fn + ": " + str(cnt) + " -> " + str(cnt_))
+    print(fn + ": " + str(cnt) + " -> " + str(cnt_) + " -> " + str(cnt_2))
 
     # utf-8にする
     os.system("nkf -w --overwrite " + wiki_wakati_path)
