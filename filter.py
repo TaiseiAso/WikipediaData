@@ -29,7 +29,7 @@ def filtering(config):
     保存してあるコーパスにフィルタ処理を施す
     @param config 設定ファイル情報
     """
-    fn = config['filename']
+    fn = config['filename']['wiki_file']
     fi = config['filter']
 
     # wakatiフォルダがなければ終了
@@ -47,11 +47,11 @@ def filtering(config):
             os.remove(os.path.join(root, name))
 
     # 分かち書きされたウィキペディアデータをフィルタリング
-    if os.path.isfile("wakati/" + fn['wiki_file'] + ".txt"):
+    if os.path.isfile("wakati/" + fn + ".txt"):
         cnt, cnt_ = 0, 0
 
-        with open("wakati/" + fn['wiki_file'] + ".txt", 'r', encoding='utf-8') as f,\
-        open("filtered/" + fn['wiki_file'] + ".txt", 'w', encoding='utf-8') as f_filtered:
+        with open("wakati/" + fn + ".txt", 'r', encoding='utf-8') as f,\
+        open("filtered/" + fn + ".txt", 'w', encoding='utf-8') as f_filtered:
 
             line = f.readline()
 
@@ -64,7 +64,7 @@ def filtering(config):
 
                 line = f.readline()
 
-        print(fn['wiki_file'] + ": " + str(cnt) + " -> " + str(cnt_))
+        print(fn + ": " + str(cnt) + " -> " + str(cnt_))
     else:
         print("no filtered file")
 
