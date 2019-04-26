@@ -6,7 +6,7 @@
 ## 要件
 - Linuxコマンドが使用可能な環境
 - python3
-- yaml
+- pyyaml
 - MeCab
 - 必要ファイルをダウンロード
     - WikiExtractor.py
