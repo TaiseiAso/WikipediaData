@@ -8,6 +8,7 @@ __date__ = "24 Apr 2019"
 
 # 必要なモジュールのインポート
 import os
+import yaml
 
 
 def unzip(config):

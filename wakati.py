@@ -10,6 +10,7 @@ __date__ = "24 Apr 2019"
 
 
 # 必要なモジュールのインポート
+import yaml
 import re
 import os
 import unicodedata
