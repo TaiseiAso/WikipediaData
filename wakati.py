@@ -17,8 +17,8 @@ import unicodedata
 import MeCab
 
 
-# 分かち書きをするモジュール
-owakati = MeCab.Tagger("-Owakati")
+# 分かち書きするモジュール
+tagger = MeCab.Tagger('-Owakati')
 
 
 def check(text):
