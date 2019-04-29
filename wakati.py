@@ -171,7 +171,7 @@ def wakati(config):
 
             line = f_text.readline()
 
-    print(fn + ": " + str(cnt) + " -> " + str(cnt_) + " -> " + str(cnt_2))
+    print(fn + ".txt: " + str(cnt) + " -> " + str(cnt_) + " -> " + str(cnt_2))
 
     # utf-8にする
     os.system("nkf -w --overwrite " + wiki_wakati_path)

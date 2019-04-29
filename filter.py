@@ -64,7 +64,7 @@ def filtering(config):
 
                 line = f.readline()
 
-        print(fn + ": " + str(cnt) + " -> " + str(cnt_))
+        print(fn + ".txt: " + str(cnt) + " -> " + str(cnt_))
     else:
         print("no filtered file")
 
