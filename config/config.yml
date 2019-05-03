@@ -4,7 +4,6 @@ filename:
     part_file       : "part"
 
 dump:
-    text_file       : on
     standard_file   : on
     part_file       : on
 

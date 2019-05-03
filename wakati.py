@@ -5,8 +5,8 @@
 nkfツールが必要
 """
 __author__ = "Aso Taisei"
-__version__ = "1.0.0"
-__date__ = "24 Apr 2019"
+__version__ = "1.0.1"
+__date__ = "4 May 2019"
 
 
 # 必要なモジュールのインポート
@@ -28,7 +28,39 @@ class WikipediaProcessor():
         コンストラクタ
         @param config 設定ファイル情報
         """
-        pass
+        # 保存ファイル名の情報取得
+        fn = config['filename']
+        self.wik_fn = fn['wiki_file']
+        std_fn = fn['standard_file']
+        prt_fn = fn['part_file']
+
+        # 保存ファイルパス
+        self.wik_fp = "data/" + self.wik_fn + ".txt"
+        self.txt_fp = "wakati/" + self.wik_fn + ".txt"
+        self.std_fp = "wakati/" + self.wik_fn + "_" + std_fn + ".txt"
+        self.prt_fp = "wakati/" + self.wik_fn + "_" + prt_fn + ".txt"
+
+        # 保存するかどうかを取得
+        fd = config['dump']
+        self.std_fd = fd['standard_file']
+        self.prt_fd = fd['part_file']
+
+        # 品詞のトークンを取得
+        pt = config['part']
+        self.noun_token = pt['noun']
+        self.verb_token = pt['verb']
+        self.adjective_token = pt['adjective']
+        self.adverb_token = pt['adverb']
+        self.particle_token = pt['particle']
+        self.auxiliary_verb_token = pt['auxiliary_verb']
+        self.conjunction_token = pt['conjunction']
+        self.prefix_token = pt['prefix']
+        self.filler_token = pt['filler']
+        self.impression_verb_token = pt['impression_verb']
+        self.three_dots_token = pt['three_dots']
+        self.phrase_point_token = pt['phrase_point']
+        self.reading_point_token = pt['reading_point']
+        self.other_token = pt['other']
 
     def check(self, text):
         """
@@ -40,7 +72,7 @@ class WikipediaProcessor():
         if re.compile("^<|[a-zA-Z0-9]").search(text):
             return False
         # 特定のネットスラングを含む
-        if re.compile("ナカーマ|イキスギ|いきすぎ|スヤァ|すやぁ|うぇーい|ウェーイ|おなしゃす|アザッス|あざっす|ドヤ|どや|ワカリミ|わかりみ").search(text):
+        if re.compile("ナカーマ|イキスギ|いきすぎ|スヤ|すや|うぇーい|ウェーイ|おなしゃす|アザッス|あざっす|ドヤ|どや|ワカリミ|わかりみ|分かりみ").search(text):
             return False
         return True
 
@@ -98,87 +130,161 @@ class WikipediaProcessor():
         """
         テキストから特定の形態素を除去する
         @param text テキスト
-        @return 特定の形態素を除去したテキストを文単位に分割したリスト
+        @return 特定の形態素を除去したテキストのリスト
+        @return 標準形/表層系のテキストのリスト
+        @return 品詞列のリスト
         """
         lines = text.strip().split("\n")
-        results = []
+        results, standards, parts = [], [], []
 
         for line in lines:
-            result = ""
-            morphemes = tagger.parse(line).strip().split()
+            add_result, add_standard, add_part = "", "", ""
+            node = tagger.parseToNode(line)
 
-            for morpheme in morphemes:
-                if morpheme not in ["ノ", "ーノ", "ロ", "艸", "屮", "罒", "灬", "彡", "ヮ", "益",\
+            while node:
+                feature = node.feature.split(',')
+                if feature[0] == "BOS/EOS":
+                    node = node.next
+                    continue
+
+                if node.surface == "?":
+                    node.surface = "!?"
+
+                if node.surface in [".", "..", "!", "ノ", "ーノ", "ロ", "艸", "屮", "罒", "灬", "彡", "ヮ", "益",\
                 "皿", "タヒ", "厂", "厂厂", "啞", "卍", "ノノ", "ノノノ", "ノシ", "ノツ",\
                 "癶", "癶癶", "乁", "乁厂", "マ", "んご", "んゴ", "ンゴ", "にき", "ニキ", "ナカ", "み", "ミ"]:
-                    if morpheme not in ["つ", "っ"] or result != "":
-                        result += morpheme + " "
+                    node = node.next
+                    continue
 
-            result = result.strip()
-            if result not in ["、", "。", "！", "？", "!?", "", "... 。", "... ！", "... ？", "... !?",\
+                if node.surface in ["つ", "っ"] and add_result == "":
+                    node = node.next
+                    continue
+
+                if feature[0] == "名詞":
+                    token = self.noun_token
+                elif feature[0] == "動詞":
+                    token = self.verb_token
+                elif feature[0] == "形容詞":
+                    token = self.adjective_token
+                elif feature[0] == "副詞":
+                    token = self.adverb_token
+                elif feature[0] == "助詞":
+                    token = self.particle_token
+                elif feature[0] == "助動詞":
+                    token = self.auxiliary_verb_token
+                elif feature[0] == "接続詞":
+                    token = self.conjunction_token
+                elif feature[0] == "接頭詞":
+                    token = self.prefix_token
+                elif feature[0] == "フィラー":
+                    token = self.filler_token
+                elif feature[0] == "感動詞":
+                    token = self.impression_verb_token
+                elif node.surface == "...":
+                    token = self.three_dots_token
+                elif node.surface in ["。", "！", "？", "!?"]:
+                    token = self.phrase_point_token
+                elif node.surface == "、":
+                    token = self.reading_point_token
+                else:
+                    token = self.other_token
+
+                add_result += node.surface + " "
+                if re.compile("[^ぁ-んァ-ヶｧ-ｳﾞ一-龠々ー～]").search(feature[6]) or\
+                token in [self.three_dots_token, self.phrase_point_token, self.reading_point_token] or\
+                node.surface in ["ー", "～"]:
+                    add_standard += node.surface + " "
+                else:
+                    add_standard += feature[6] + " "
+                add_part += token + " "
+
+                node = node.next
+
+            if add_result.strip() not in ["、", "。", "！", "？", "!?", "", "... 。", "... ！", "... ？", "... !?",\
             "人 。", "つ 。", "っ 。", "笑 。", "笑 ！", "笑 ？", "笑 !?"]:
-                results.append(result)
+                results.append(add_result.strip())
+                standards.append(add_standard.strip())
+                parts.append(add_part.strip())
 
-        return results
+        return results, standards, parts
 
+    def wakati(self):
+        """ウィキペディア記事を分かち書きしたコーパスを作成する"""
+        if not os.path.isdir("data"):
+            print("no data folder")
+            return
 
-############
+        if not os.path.isfile(self.wik_fp):
+            print("no " + self.wik_fp + " file")
+            return
 
+        # wakatiフォルダがなければ作成する
+        if not os.path.isdir("wakati"):
+            os.mkdir("wakati")
 
-def wakati(config):
-    """
-    ウィキペディア記事を分かち書きしたコーパスを作成する
-    @param config 設定ファイル情報
-    """
-    # 各ファイルのパス
-    fn = config['filename']['wiki_file']
-    wiki_path = "data/" + fn + ".txt"
-    wiki_wakati_path = "wakati/" + fn + ".txt"
+        # wakatiフォルダ内のファイルをすべて削除
+        for root, _, files in os.walk("wakati", topdown=False):
+            for name in files:
+                os.remove(os.path.join(root, name))
 
-    if not os.path.isdir("data"):
-        print("no data folder")
-        return
+        cnt, cnt_, cnt_2 = 0, 0, 0
 
-    if not os.path.isfile(wiki_path):
-        print("no " + wiki_path + " file")
-        return
+        f_txt = open(self.txt_fp, 'w', encoding='utf-8')
+        if self.std_fd:
+            f_std = open(self.std_fp, 'w', encoding='utf-8')
+        if self.prt_fd:
+            f_prt = open(self.prt_fp, 'w', encoding='utf-8')
 
-    # wakatiフォルダがなければ作成する
-    if not os.path.isdir("wakati"):
-        os.mkdir("wakati")
-
-    # wakatiフォルダ内のファイルをすべて削除
-    for root, _, files in os.walk("wakati", topdown=False):
-        for name in files:
-            os.remove(os.path.join(root, name))
-
-    cnt, cnt_, cnt_2 = 0, 0, 0
-
-    # 形態素解析してコーパスを作成
-    with open(wiki_path, 'r', encoding='utf-8') as f_text,\
-    open(wiki_wakati_path, 'w', encoding='utf-8') as f_wakati:
-
-        line = f_text.readline()
-        while line:
-            cnt += 1
-            line = unicodedata.normalize('NFKC', line).strip()
-
-            # 適切な文のみ選択する
-            if check(line):
-                # 文を整形して保存
-                results = del_morpheme(normalize(line))
-                if results != []:
-                    cnt_ += 1
-                for result in results:
-                    cnt_2 += 1
-                    f_wakati.write(result + "\n")
+        # 形態素解析してコーパスを作成
+        with open(self.wik_fp, 'r', encoding='utf-8') as f:
 
             line = f_text.readline()
+            while line:
+                cnt += 1
+                line = unicodedata.normalize('NFKC', line).strip()
 
-    print(fn + ".txt: " + str(cnt) + " -> " + str(cnt_) + " -> " + str(cnt_2))
+                # 適切な文のみ選択する
+                if check(line):
+                    # 文を整形して保存
+                    results, standards, parts = self.del_morpheme(self.normalize(line))
+                    if results != []:
+                        cnt_ += 1
+                        cnt_2 += len(results)
 
-    # utf-8にする
-    os.system("nkf -w --overwrite " + wiki_wakati_path)
+                        for result in results:
+                            f_txt.write(result + "\n")
+                        if self.std_fd:
+                            for standard in standards:
+                                f_std.write(standard + "\n")
+                        if self.prt_fd:
+                            for part in parts:
+                                f_prt.write(part + "\n")
+
+                line = f_text.readline()
+
+        print(self.wik_fn + ".txt: " + str(cnt) + " -> " + str(cnt_) + " -> " + str(cnt_2))
+
+        f_txt.close()
+        if self.std_fd:
+            f_std.close()
+        if self.prt_fd:
+            f_prt.close()
+
+        # utf-8にする
+        os.system("nkf -w --overwrite " + self.txt_fp)
+        if self.std_fd:
+            os.system("nkf -w --overwrite " + self.std_fp)
+        if self.prt_fd:
+            os.system("nkf -w --overwrite " + self.prt_fp)
+
+
+def get_wikipedia_corpus(config):
+    """
+    ウィキペディアよりコーパスを作成
+    @param config 設定ファイル情報
+    """
+    processor = WikipediaProcessor(config)
+    processor.wakati()
 
 
 if __name__ == '__main__':
@@ -186,4 +292,4 @@ if __name__ == '__main__':
     config = yaml.load(stream=open("config/config.yml", 'rt'), Loader=yaml.SafeLoader)
 
     # ウィキペディア記事の分かち書きコーパスを作成
-    wakati(config)
+    get_wikipedia_corpus(config)

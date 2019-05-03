@@ -59,11 +59,10 @@
     - standard_file: 標準形/表層形に変換したファイルに付与する文字列
     - part_file: 品詞分類したファイルに付与する文字列
 - dump: 各ファイルを保存するかどうかのフラグ (on/off)
-    - text_file: 正規化処理を施して形態素解析したファイル
     - standard_file: 標準形/表層形に変換したファイル
     - part_file: 品詞分類したファイル
 - filter: フィルタリングの内容
-    - length: 長さに関する制限 (整数)
+    - length: 長さに関する制限 (dump適用後) (整数)
         - len_min: 全体の長さの最小
         - len_max: 全体の長さの最大
     - dump: 保存する品詞 (part_fileが存在する場合のみ適用) (on/off)
