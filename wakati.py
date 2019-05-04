@@ -289,7 +289,7 @@ def get_wikipedia_corpus(config):
 
 if __name__ == '__main__':
     # 設定ファイルを読み込む
-    config = yaml.load(stream=open("config/config.yml", 'rt'), Loader=yaml.SafeLoader)
+    config = yaml.load(stream=open("config/config.yml", 'rt', encoding='utf-8'), Loader=yaml.SafeLoader)
 
     # ウィキペディア記事の分かち書きコーパスを作成
     get_wikipedia_corpus(config)

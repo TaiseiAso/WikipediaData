@@ -165,7 +165,7 @@ class WikipediaFilter():
 
                 # 指定した品詞を除外
                 if prt:
-                    line_txt, line_std, line_prt = self.del_part(line_txt, line_std if std else None, line_prt)
+                    line_txt, line_std, line_prt = self.del_part(line_txt, line_std, line_prt)
 
                 # 適切なデータであるか判定
                 if self.text_check(line_txt) and (not prt or self.part_check(line_prt)):
@@ -209,7 +209,7 @@ def filtering_wikipedia_corpus(config):
 
 if __name__ == '__main__':
     # 設定ファイルを読み込む
-    config = yaml.load(stream=open("config/config.yml", 'rt'), Loader=yaml.SafeLoader)
+    config = yaml.load(stream=open("config/config.yml", 'rt', encoding='utf-8'), Loader=yaml.SafeLoader)
 
     # フィルタ処理開始
     filtering_wikipedia_corpus(config)
