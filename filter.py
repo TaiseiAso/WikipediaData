@@ -37,7 +37,8 @@ class WikipediaFilter():
 
         fi_dp = fi['dump']
         self.dump_list = [
-            fi_dp['noun'], fi_dp['verb'], fi_dp['adjective'],
+            fi_dp['noun_main'], fi_dp['verb_main'], fi_dp['adjective_main'],
+            fi_dp['noun_sub'], fi_dp['verb_sub'], fi_dp['adjective_sub'],
             fi_dp['adverb'], fi_dp['particle'], fi_dp['auxiliary_verb'],
             fi_dp['conjunction'], fi_dp['prefix'], fi_dp['filler'],
             fi_dp['impression_verb'], fi_dp['three_dots'], fi_dp['phrase_point'],
@@ -46,7 +47,8 @@ class WikipediaFilter():
 
         fi_ex = fi['exist']
         self.exist_list = [
-            fi_ex['noun'], fi_ex['verb'], fi_ex['adjective'],
+            fi_ex['noun_main'], fi_ex['verb_main'], fi_ex['adjective_main'],
+            fi_ex['noun_sub'], fi_ex['verb_sub'], fi_ex['adjective_sub'],
             fi_ex['adverb'], fi_ex['particle'], fi_ex['auxiliary_verb'],
             fi_ex['conjunction'], fi_ex['prefix'], fi_ex['filler'],
             fi_ex['impression_verb'], fi_ex['three_dots'], fi_ex['phrase_point'],
@@ -56,7 +58,8 @@ class WikipediaFilter():
         # 品詞のトークンを取得
         pt = config['part']
         self.token_list = [
-            pt['noun'], pt['verb'], pt['adjective'],
+            pt['noun_main'], pt['verb_main'], pt['adjective_main'],
+            pt['noun_sub'], pt['verb_sub'], pt['adjective_sub'],
             pt['adverb'], pt['particle'], pt['auxiliary_verb'],
             pt['conjunction'], pt['prefix'], pt['filler'],
             pt['impression_verb'], pt['three_dots'], pt['phrase_point'],

@@ -12,9 +12,12 @@ filter:
         len_min : 10
         len_max : 20
     dump:
-        noun            : on
-        verb            : on
-        adjective       : on
+        noun_main       : on
+        noun_sub        : on
+        verb_main       : on
+        verb_sub        : on
+        adjective_main  : on
+        adjective_sub   : on
         adverb          : on
         particle        : on
         auxiliary_verb  : on
@@ -27,9 +30,12 @@ filter:
         reading_point   : on
         other           : on
     exist:
-        noun            : off
-        verb            : off
-        adjective       : off
+        noun_main       : on
+        noun_sub        : off
+        verb_main       : off
+        verb_sub        : off
+        adjective_main  : off
+        adjective_sub   : off
         adverb          : off
         particle        : off
         auxiliary_verb  : off
@@ -42,9 +48,12 @@ filter:
         reading_point   : off
 
 part:
-    noun            : "名詞"
-    verb            : "動詞"
-    adjective       : "形容詞"
+    noun_main       : "自立名詞"
+    noun_sub        : "非自立名詞"
+    verb_main       : "自立動詞"
+    verb_sub        : "非自立動詞"
+    adjective_main  : "自立形容詞"
+    adjective_sub   : "非自立形容詞"
     adverb          : "副詞"
     particle        : "助詞"
     auxiliary_verb  : "助動詞"

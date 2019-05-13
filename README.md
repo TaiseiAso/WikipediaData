@@ -66,9 +66,12 @@
         - len_min: 全体の長さの最小
         - len_max: 全体の長さの最大
     - dump: 保存する品詞 (part_fileが存在する場合のみ適用) (on/off)
-        - noun: 名詞
-        - verb: 動詞
-        - adjective: 形容詞
+        - noun_main: 自立名詞
+        - noun_sub: 非自立名詞
+        - verb_main: 自立動詞
+        - verb_sub: 非自立動詞
+        - adjective_main: 自立形容詞
+        - adjective_sub: 非自立形容詞
         - adverb: 副詞
         - particle: 助詞
         - auxiliary_verb: 助動詞
@@ -81,9 +84,12 @@
         - reading_point: 読点
         - other: その他
     - exist: 存在しなければならない品詞 (part_fileが存在する場合のみ適用、dump適用後) (on/off)
-        - noun: 名詞
-        - verb: 動詞
-        - adjective: 形容詞
+        - noun_main: 自立名詞
+        - noun_sub: 非自立名詞
+        - verb_main: 自立動詞
+        - verb_sub: 非自立動詞
+        - adjective_main: 自立形容詞
+        - adjective_sub: 非自立形容詞
         - adverb: 副詞
         - particle: 助詞
         - auxiliary_verb: 助動詞
@@ -95,9 +101,12 @@
         - phrase_point: 句点
         - reading_point: 読点
 - part: part_fileの各品詞に割り当てるトークン (文字列)
-    - noun: 名詞
-    - verb: 動詞
-    - adjective: 形容詞
+    - noun_main: 自立名詞
+    - noun_sub: 非自立名詞
+    - verb_main: 自立動詞
+    - verb_sub: 非自立動詞
+    - adjective_main: 自立形容詞
+    - adjective_sub: 非自立形容詞
     - adverb: 副詞
     - particle: 助詞
     - auxiliary_verb: 助動詞
